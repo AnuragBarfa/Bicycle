@@ -1,4 +1,5 @@
 package learnDesign;
+import java.util.HashMap;
 
 /**
 * An <code>CircularObject</code> interface give abstratc behaviour for circular objects
@@ -19,9 +20,9 @@ interface CircularObject{
 class Wheel implements CircularObject{
 	private int rim;
 	private int tire;
-	public Wheel(int rim,int tire){
-		this.rim=rim;
-		this.tire=tire;
+	public Wheel(HashMap<String,Object> params){
+		this.rim=(int)params.get("rim");
+		this.tire=(int)params.get("tire");
 	}
 	/**
 	* Calculate rim of wheel
@@ -74,10 +75,35 @@ class Gear{
 		return ratio()*wheel.diameter();
 	}
 }
+/**
+* An <code>Wrappers</code> class contain wrapper methods useful in case when input format of function(fixed no of arguments) used is different from what we use(map) and we can not modify the function 
+* @author Anurag Barfa
+* @version1.1
+*/
+class Wrapper{
+	/**
+	* wrappers to messages for which Gear(assume gear is class which can not be modified) can respond 
+	*/
+	static class GearWrapper{
+		public static Gear gear(HashMap<String,Object> params){
+			return new Gear((int)params.get("chainring"), (int)params.get("cog"),
+				(CircularObject)params.get("wheel"));
+		}
+	}
+}
 public class OODesign{
 	public static void main(String[] args){
-		Wheel wheel=new Wheel(26,2);
-		Gear gear=new Gear(12,7,wheel);
+		HashMap<String,Object> wheel_params=new HashMap<>();
+		wheel_params.put("rim",26);
+		wheel_params.put("tire",2);
+		Wheel wheel=new Wheel(wheel_params);
+
+		HashMap<String,Object> gear_params=new HashMap<>();
+		gear_params.put("chainring",17);
+		gear_params.put("cog",7);
+		gear_params.put("wheel",wheel);
+		Gear gear=Wrapper.GearWrapper.gear(gear_params);
+
 		System.out.println(gear.ratio());
 		System.out.println(gear.gear_inches());
 	}
