@@ -93,17 +93,33 @@ class Wrapper{
 }
 class Bicycle{
 	private String size;
-	private String type_color;
+	// private String type_color;
 	public Bicycle(HashMap<String,Object> params){
 		this.size=(String)params.get("size");
-		this.type_color=(String)params.get("type_color");
+		// this.type_color=(String)params.get("type_color");
 	}
 	public HashMap<String,Object> spares(){
 		HashMap<String,Object> output=new HashMap<>();
 		output.put("chain","10-speed");
 		output.put("tire_size",23);
-		output.put("type_color",this.type_color);
+		// output.put("type_color",this.type_color);
 		return output;
+	}
+}
+class RoadBicycle extends Bicycle{
+	private String type_color;
+	public RoadBicycle(HashMap<String,Object> params){
+		super(params);
+		this.type_color=(String)params.get("type_color");
+	}
+}
+class MountainBicycle extends Bicycle{
+	private String front_shock;
+	private String rear_shock;
+	public MountainBicycle(HashMap<String,Object> params){
+		super(params);
+		this.front_shock=(String)params.get("front_shock");
+		this.rear_shock=(String)params.get("rear_shock");
 	}
 }
 public class OODesign{
@@ -125,7 +141,14 @@ public class OODesign{
 		HashMap<String,Object> bicycle_params=new HashMap<>();
 		bicycle_params.put("size","M");
 		bicycle_params.put("type_color","red");
-		Bicycle bicycle=new Bicycle(bicycle_params);
+		RoadBicycle bicycle=new RoadBicycle(bicycle_params);
 		System.out.println(bicycle.spares().get("chain"));
+
+		HashMap<String,Object> bicycle_params2=new HashMap<>();
+		bicycle_params2.put("size","S");
+		bicycle_params2.put("front_shock","Monitau");
+		bicycle_params2.put("rear_shock","Fox");
+		MountainBicycle bicycle2=new MountainBicycle(bicycle_params2);
+		System.out.println(bicycle2.spares().get("chain"));
 	}
 }
