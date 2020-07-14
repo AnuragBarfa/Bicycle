@@ -82,13 +82,28 @@ class Gear{
 */
 class Wrapper{
 	/**
-	* wrappers to messages for which Gear(assume gear is class which can not be modified) can respond 
+	* wrappers to messages for which Gear(assume gear is class which can not be modified so we need) can respond 
 	*/
 	static class GearWrapper{
 		public static Gear gear(HashMap<String,Object> params){
 			return new Gear((int)params.get("chainring"), (int)params.get("cog"),
 				(CircularObject)params.get("wheel"));
 		}
+	}
+}
+class Bicycle{
+	private String size;
+	private String type_color;
+	public Bicycle(HashMap<String,Object> params){
+		this.size=(String)params.get("size");
+		this.type_color=(String)params.get("type_color");
+	}
+	public HashMap<String,Object> spares(){
+		HashMap<String,Object> output=new HashMap<>();
+		output.put("chain","10-speed");
+		output.put("tire_size",23);
+		output.put("type_color",this.type_color);
+		return output;
 	}
 }
 public class OODesign{
@@ -106,5 +121,11 @@ public class OODesign{
 
 		System.out.println(gear.ratio());
 		System.out.println(gear.gear_inches());
+
+		HashMap<String,Object> bicycle_params=new HashMap<>();
+		bicycle_params.put("size","M");
+		bicycle_params.put("type_color","red");
+		Bicycle bicycle=new Bicycle(bicycle_params);
+		System.out.println(bicycle.spares().get("chain"));
 	}
 }
