@@ -91,28 +91,76 @@ class Wrapper{
 		}
 	}
 }
+/**
+* An <code>Bicycle</code> give abstract defination of Bicycle's behavious and store common information related to bicycle chain,size, tire_size
+* @author Anurag Barfa
+*/
 class Bicycle{
 	private String size;
-	// private String type_color;
+	private String chain;
+	private String tire_size;
 	public Bicycle(HashMap<String,Object> params){
 		this.size=(String)params.get("size");
-		// this.type_color=(String)params.get("type_color");
+		this.chain=(String)(params.get("chain")!=null?params.get("chain"):default_chain());
+		this.tire_size=(String)(params.get("tire_size")!=null?params.get("tire_size"):default_tire_size());
 	}
+
+	/**
+	* Give default value for Bicycle chain
+	* @return (String)chain 
+	*/
+	public String default_chain(){
+		return "10-speed";
+	}
+
+	public String default_tire_size(){
+		return "32";
+	};
+
+	/**
+	* Calculate size of Bicycle
+	* @return (String)size 
+	*/
+	public String getSize(){
+		return this.size;
+	}
+
+	/**
+	* Calculate spare parts of Bicycle
+	* @return (HashMap<String,Object>)output 
+	*/
 	public HashMap<String,Object> spares(){
 		HashMap<String,Object> output=new HashMap<>();
-		output.put("chain","10-speed");
-		output.put("tire_size",23);
-		// output.put("type_color",this.type_color);
+		output.put("chain",this.chain);
+		output.put("tire_size",this.tire_size);
 		return output;
 	}
 }
+/**
+* An <code>RoadBicycle</code> Extends to Bicycle class with some behaviour and new states specific to road bicycles
+* @author Anurag Barfa
+*/
 class RoadBicycle extends Bicycle{
 	private String type_color;
 	public RoadBicycle(HashMap<String,Object> params){
 		super(params);
 		this.type_color=(String)params.get("type_color");
 	}
+	public String default_tire_size(){
+		return "23";
+	}
+	public HashMap<String,Object> spares(){
+		System.out.println("in it");
+		HashMap<String,Object> intermidiate_output=super.spares();
+		intermidiate_output.put("type_color",this.type_color);
+		return intermidiate_output;
+	}
 }
+
+/**
+* An <code>MountainBicycle</code> Extends to Bicycle class with some behaviour and new states specific to mountain bicycles
+* @author Anurag Barfa
+*/
 class MountainBicycle extends Bicycle{
 	private String front_shock;
 	private String rear_shock;
@@ -120,6 +168,16 @@ class MountainBicycle extends Bicycle{
 		super(params);
 		this.front_shock=(String)params.get("front_shock");
 		this.rear_shock=(String)params.get("rear_shock");
+	}
+	public String default_tire_size(){
+		return "21";
+	}
+	public HashMap<String,Object> spares(){
+		System.out.println("in it");
+		HashMap<String,Object> intermidiate_output=super.spares();
+		intermidiate_output.put("front_shock",this.front_shock);
+		intermidiate_output.put("rear_shock",this.rear_shock);
+		return intermidiate_output;
 	}
 }
 public class OODesign{
@@ -141,8 +199,11 @@ public class OODesign{
 		HashMap<String,Object> bicycle_params=new HashMap<>();
 		bicycle_params.put("size","M");
 		bicycle_params.put("type_color","red");
+		bicycle_params.put("chain","20-speed");
 		RoadBicycle bicycle=new RoadBicycle(bicycle_params);
 		System.out.println(bicycle.spares().get("chain"));
+		System.out.println(bicycle.spares().get("tire_size"));
+		System.out.println(bicycle.spares().get("type_color"));
 
 		HashMap<String,Object> bicycle_params2=new HashMap<>();
 		bicycle_params2.put("size","S");
@@ -150,5 +211,7 @@ public class OODesign{
 		bicycle_params2.put("rear_shock","Fox");
 		MountainBicycle bicycle2=new MountainBicycle(bicycle_params2);
 		System.out.println(bicycle2.spares().get("chain"));
+		System.out.println(bicycle2.spares().get("tire_size"));
+		System.out.println(bicycle2.spares().get("front_shock"));
 	}
 }
