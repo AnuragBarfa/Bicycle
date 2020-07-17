@@ -29,6 +29,9 @@ class Parts{
 		ArrayList<Part> output=parts.stream().filter(x->x.get_needs()).collect(Collectors.toCollection(ArrayList::new));
 		return output;
 	}
+	public int size(){
+		return parts.size();
+	}
 
 }
 /**
